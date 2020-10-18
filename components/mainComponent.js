@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import Menu from './menuComponent';
+import Home from './homeComponent'
 import DishDetail from './dishDetailComponent';
-import { View, Platform } from 'react-native'
+import { View, Platform, useWindowDimensions } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Constants } from 'expo' 
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const MenuNavigator = createStackNavigator();
 
@@ -28,12 +29,39 @@ function MyStack(){
                 component={ Menu }
             />
             <MenuNavigator.Screen
-                name="Dish Detail"
+                name="DishDetail"
                 component={ DishDetail }
             />
         </MenuNavigator.Navigator>
     )
 }
+
+const Drawer = createDrawerNavigator();
+
+function MyDrawer() {
+  const dimensions = useWindowDimensions();
+
+  return (
+    <Drawer.Navigator
+      drawerType={dimensions.width >= 768 ? 'permanent' : 'front'}
+      initialRouteName={Home}
+      drawerContentOptions={{
+        itemStyle: { marginVertical: 5 },
+      }}
+    >
+      <Drawer.Screen
+        name="Home"
+        component={ Home }
+      />
+      <Drawer.Screen
+        name="Menu"
+        component={ MyStack }
+      />
+      
+    </Drawer.Navigator>
+  );
+}
+
 
 class Main extends Component {
 
@@ -42,7 +70,7 @@ class Main extends Component {
     return (
         <View style={{flex:1}}>
             <NavigationContainer>
-                <MyStack />
+                <MyDrawer />
             </NavigationContainer>
         </View>
     );
