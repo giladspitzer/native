@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Card, ListItem, Avatar } from 'react-native-elements';
-import { Text, ScrollView, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import {LEADERS} from '../shared/leaders'
 
 function History(){
@@ -45,7 +45,7 @@ class About extends Component{
     
         };
         return(
-            <ScrollView>
+            <View>
                 <History/>
                 <Card>
                     <Card.Title>Our History</Card.Title>
@@ -56,7 +56,7 @@ class About extends Component{
                             keyExtractor={item => item.id.toString()}
                         />
                 </Card>
-            </ScrollView>
+            </View>
         )
     }
 }

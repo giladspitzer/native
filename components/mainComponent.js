@@ -10,12 +10,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import SafeAreaView from 'react-native-safe-area-view';
+
 
 const Tab = createMaterialTopTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator headerMode="float">
       <Tab.Screen name="Contact" component={Contact} />
       <Tab.Screen name="About" component={ About }/>
     </Tab.Navigator>
@@ -62,6 +64,7 @@ function MyDrawer() {
   return (
     <Drawer.Navigator
       drawerType={dimensions.width >= 768 ? 'permanent' : 'front'}
+      headerMode="screen"
       initialRouteName={Home}
       drawerContentOptions={{
         itemStyle: { marginVertical: 5 },
@@ -90,11 +93,11 @@ class Main extends Component {
   render() {
  
     return (
-        <View style={{flex:1}}>
+        <SafeAreaView forceInset={{ top: 'always' }} style={{ backgroundColor: '#E3EFFF', flex: 1}}>
             <NavigationContainer>
                 <MyDrawer />
             </NavigationContainer>
-        </View>
+        </SafeAreaView>
     );
   }
 }
