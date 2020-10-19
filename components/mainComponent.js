@@ -113,22 +113,22 @@ function MyDrawer() {
         name="Home"
         component={ HomeStack }
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="About Us"
         component={ AboutStack }
-      /> */}
+      />
       <Drawer.Screen
         name="Menu"
         component={ MenuStack }
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="Contact Us"
         component={ ContactStack }
-      />  */}
-      <Drawer.Screen
+      /> 
+      {/* <Drawer.Screen
         name="Other"
         component={ OtherStack }
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }
