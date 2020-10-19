@@ -31,7 +31,7 @@ class About extends Component{
         const RenderMenuItem = ({leader}) => {
             return(
                 <ListItem key={leader.id}>
-                    <Avatar source={{uri: require('../assets/images/uthappizza.png')}}/>
+                    <Avatar source={require('../assets/images/uthappizza.png')}/>
                     <ListItem.Content>
                         <ListItem.Title>
                             {leader.name}, {leader.designation}
