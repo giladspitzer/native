@@ -2,11 +2,25 @@ import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import Menu from './menuComponent';
 import Home from './homeComponent'
+import Contact from './contactComponent'
+import About from './aboutComponent'
 import DishDetail from './dishDetailComponent';
 import { View, Platform, useWindowDimensions } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+const Tab = createMaterialTopTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Contact" component={Contact} />
+      <Tab.Screen name="About" component={ About }/>
+    </Tab.Navigator>
+  );
+}
 
 const MenuNavigator = createStackNavigator();
 
@@ -15,9 +29,9 @@ function MyStack(){
         <MenuNavigator.Navigator initialRouteName="Menu" headerMode="screen"
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: '#f4511e',
+                    backgroundColor: '#E3EFFF',
                 },
-                headerTintColor: '#fff',
+                headerTintColor: '#007aff',
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 }
@@ -27,6 +41,10 @@ function MyStack(){
             <MenuNavigator.Screen
                 name="Menu"
                 component={ Menu }
+            />
+            <MenuNavigator.Screen
+                name="Home"
+                component={ Home }
             />
             <MenuNavigator.Screen
                 name="DishDetail"
@@ -58,6 +76,10 @@ function MyDrawer() {
         component={ MyStack }
       />
       
+      <Drawer.Screen
+        name="Other"
+        component={MyTabs }
+      />
     </Drawer.Navigator>
   );
 }

@@ -2,36 +2,9 @@ import React, {Component} from 'react';
 import { View, FlatList } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { DISHES } from '../shared/dishes';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
-const MenuNavigator = createStackNavigator();
 
-function MyStack(){
-    return(
-        <MenuNavigator.Navigator initialRouteName="Menu" headerMode="screen"
-            screenOptions={{
-                headerStyle: {
-                    backgroundColor: '#f4511e',
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                }
-            }}
-    
-        >
-            <MenuNavigator.Screen
-                name="Menu"
-                component={ Menu }
-            />
-            <MenuNavigator.Screen
-                name="DishDetail"
-                component={ DishDetail }
-            />
-        </MenuNavigator.Navigator>
-    )
-}
+
 class Menu extends Component {
     constructor(props){
         super(props)
@@ -64,7 +37,6 @@ class Menu extends Component {
                     
             ); 
         };
-
         return (
             <FlatList 
                 data={this.state.dishes}
