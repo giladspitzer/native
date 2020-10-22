@@ -37,6 +37,12 @@ class Home extends Component{
         };
     }
 
+    static navigationOptions = {
+        headerStyle:{
+            title: 'Menu',
+        },
+    };
+
     render(){
         return(
             <ScrollView>
