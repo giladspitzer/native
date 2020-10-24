@@ -5,6 +5,7 @@ import Home from './homeComponent'
 import Contact from './contactComponent'
 import About from './aboutComponent'
 import DishDetail from './dishDetailComponent';
+import Reservation from './reservationComponent';
 import { ScrollView, View, useWindowDimensions, Image, StyleSheet, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -99,6 +100,19 @@ function AboutStack(){
     )
 }
 
+const ReservationNavigator = createStackNavigator();
+function ReservationStack(){
+    return(
+        <ReservationNavigator.Navigator headerMode="screen" screenOptions={defaultScreenOptions}>
+            <ReservationNavigator.Screen
+                name="Reservation"
+                component={ Reservation }
+                options={drawerMenutButton}
+                />
+        </ReservationNavigator.Navigator>
+    )
+}
+
 const ContactNavigator = createStackNavigator();
 function ContactStack(){
     return(
@@ -181,6 +195,13 @@ function MyDrawer(){
         component={ ContactStack }
         options={{
           drawerIcon: ({ tintColor }) => (<Icon name='address-card' size={22} color={tintColor} type='font-awesome' onPress={() => navigation.toggleDrawer()}/>)
+        }}
+      /> 
+      <Drawer.Screen
+        name="Reserve Table"
+        component={ ReservationStack }
+        options={{
+          drawerIcon: ({ tintColor }) => (<Icon name='cutlery' size={24} color={tintColor} type='font-awesome' onPress={() => navigation.toggleDrawer()}/>)
         }}
       /> 
       {/* <Drawer.Screen
