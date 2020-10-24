@@ -1,23 +1,18 @@
 import React from 'react';
 import Main from './components/mainComponent';
-import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import { Provider } from 'react-redux';
+import { ConfigureStore } from './redux/configureStore';
+
+const store = ConfigureStore();
+
 
 export default class App extends React.Component {
   render() {
 
-    const theme = {
-      ...DefaultTheme,
-      colors: {
-        ...DefaultTheme.colors,
-        primary: 'tomato',
-        accent: 'yellow',
-      },
-    };
-
     return (
-      <PaperProvider theme={theme}>
+      <Provider store={store}>
         <Main />
-      </PaperProvider>
+      </Provider>
     );
   }
 }
