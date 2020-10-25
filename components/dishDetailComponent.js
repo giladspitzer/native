@@ -4,7 +4,7 @@ import { View, Text, ScrollView, FlatList, Modal, Button, StyleSheet,
 import { Card, Icon, AirbnbRating, Input } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { postFavorite } from '../redux/ActionCreators';
+import { postFavorite, postComment } from '../redux/ActionCreators';
 import { color } from 'react-native-reanimated';
 
 const mapStateToProps = state => {
@@ -17,7 +17,8 @@ const mapStateToProps = state => {
   }
 
 const mapDispatchToProps = dispatch => ({
-    postFavorite: (dishId) => dispatch(postFavorite(dishId))
+    postFavorite: (dishId) => dispatch(postFavorite(dishId)),
+    postComment: (data) => dispatch(postComment(data))
 })
 
 function RenderDish(props){
@@ -75,13 +76,14 @@ function RenderComments(props){
     }
 
     return(
-        <Card title="Comments">
+        <Card>
+            <Card.Title>Comments</Card.Title>
             <FlatList 
             data={comments}
             renderItem={renderCommentItem}
             keyExtractor={item => item.id.toString()}/>
         </Card>
-    )
+    )   
 }
 
 class DishDetail extends Component{
@@ -115,7 +117,9 @@ class DishDetail extends Component{
     }
 
     handleCommentSubmit(){
-        console.log(JSON.stringify(this.state));
+        const params = this.state
+        params.dishId = this.props.route.params['dishId']
+        this.props.postComment(params)
         this.toggleCommentModal()
     }
 
@@ -129,7 +133,7 @@ class DishDetail extends Component{
                 onPress={() => this.markFavorite(dishId)} 
                 toggleCommentModal={() => this.toggleCommentModal()}
                 />
-            <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} />
+            <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId).reverse()} />
             <Modal animationType = {"slide"} transparent = {false}
                     visible = {this.state.showCommentModal}
                     onDismiss = {() => this.toggleCommentModal() }

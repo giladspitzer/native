@@ -15,7 +15,6 @@ const mapStateToProps = state => {
   }
 
 function RenderItem(props) {
-    console.log(props)
     const item = props.item;
     if (props.isLoading) {
         return(
@@ -32,10 +31,10 @@ function RenderItem(props) {
     else{
         if (item != null) {
             return(
-                <Card
-                    featuredTitle={item.name}
-                    featuredSubtitle={item.designation}
-                    image={{uri: baseUrl + item.image}}>
+                <Card>
+                    <Card.Title>{item.name}</Card.Title>
+                    <Card.FeaturedSubtitle>{item.designation}</Card.FeaturedSubtitle>
+                    <Card.Image source={{uri: baseUrl + item.image}}/>
                     <Text
                         style={{margin: 10}}>
                         {item.description}</Text>
@@ -52,7 +51,6 @@ function RenderItem(props) {
 class Home extends Component{
 
     render(){
-        console.warn(this.props)
         return(
             <ScrollView>
                 <RenderItem item={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}

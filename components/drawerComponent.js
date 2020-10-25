@@ -32,7 +32,6 @@ const drawerMenutButton = ({ navigation }) =>
 
 
 export function CustomDrawerContentComponent({props}){
-    console.log(props)
     return(
   <ScrollView>
       <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
