@@ -14,6 +14,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Icon } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import Favorites from './favoritesComponent';
 
 const mapStateToProps = state => {
   return {
@@ -97,6 +98,19 @@ function AboutStack(){
                 options={drawerMenutButton}
                 />
         </AboutNavigator.Navigator>
+    )
+}
+
+const FavoritesNavigator = createStackNavigator();
+function FavoritesStack(){
+    return(
+        <FavoritesNavigator.Navigator headerMode="screen" screenOptions={defaultScreenOptions}>
+            <FavoritesNavigator.Screen
+                name="Favorites"
+                component={ Favorites }
+                options={drawerMenutButton}
+                />
+        </FavoritesNavigator.Navigator>
     )
 }
 
@@ -202,6 +216,13 @@ function MyDrawer(){
         component={ ReservationStack }
         options={{
           drawerIcon: ({ tintColor }) => (<Icon name='cutlery' size={24} color={tintColor} type='font-awesome' onPress={() => navigation.toggleDrawer()}/>)
+        }}
+      /> 
+      <Drawer.Screen
+        name="Favorites"
+        component={ FavoritesStack }
+        options={{
+          drawerIcon: ({ tintColor }) => (<Icon name='heart' size={24} color={tintColor} type='font-awesome' onPress={() => navigation.toggleDrawer()}/>)
         }}
       /> 
       {/* <Drawer.Screen
