@@ -25,10 +25,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Favorites extends Component{
     render(){
-        const { navigate } = this.props.navigation
-
-
-
+        const  navigation  = this.props.navigation
         const renderMenuItem = ({ item, index }) => {
             const rightButton = () => {
                 return(
@@ -73,7 +70,7 @@ class Favorites extends Component{
                     <ListItem
                         key={index}
                         bottomDivider
-                        onPress={() => navigate('DishDetail', {dishId: item.id})}
+                        onPress={() => navigation.navigate('DishDetail', {dishId: item.id})}
                     >
                         <Avatar source={{url: baseUrl + item.image}} rounded/>
                         <ListItem.Content>

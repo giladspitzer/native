@@ -28,19 +28,23 @@ const mapDispatchToProps = dispatch => ({
 function RenderDish(props){
     const dish = props.dish;
 
-    handleViewRef = ref => this.view = ref;
+    handleViewRef = ref => {
+        this.view = ref;
+    }
 
     const rightDrag = ({ moveX, moveY, dx, dy }) => {
-        if ( dx < -80 )
+        if ( moveX > 80 && dx < 0 ){
             return true;
-        else
+        }else{
             return false;
+        }
     }
-    const leftDrag = ({ moveX, moveY, dx, dy }) => {
-        if ( dx < 80 )
+    const recognizeComment = ({ moveX, moveY, dx, dy }) => {
+        if ( moveX > 80 && dx > 0 ){
             return true;
-        else
+        }else{
             return false;
+        }
     }
 
     const panResponder = PanResponder.create({
@@ -60,10 +64,12 @@ function RenderDish(props){
                     ],
                     { cancelable: false }
                 );
-            }else if(leftDrag(gestureState)){
+                return true;
+            }else if(recognizeComment(gestureState)){
                 props.toggleCommentModal()
+                return true;
             }
-            return true;
+            
         }
     })
     
