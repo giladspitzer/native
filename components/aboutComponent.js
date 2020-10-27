@@ -4,6 +4,7 @@ import { Text, View, FlatList, ScrollView } from 'react-native';
 import { connect } from 'react-redux'
 import { baseUrl } from '../shared/baseUrl'
 import { Loading } from './loadingComponent';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -60,28 +61,32 @@ class About extends Component{
         else if (this.props.leaders.errMess) {
             return(
                 <ScrollView>
-                    <History />
-                    <Card
-                        title='Corporate Leadership'>
-                        <Text>{this.props.leaders.errMess}</Text>
-                    </Card>
+                    <Animatable.View animation="fadeInDown" duration={1000} delay={1000}>
+                        <History />
+                        <Card
+                            title='Corporate Leadership'>
+                            <Text>{this.props.leaders.errMess}</Text>
+                        </Card>
+                    </Animatable.View>
                 </ScrollView>
             );
         }
         else {
             return(
-                <View>
-                    <History/>
-                    <Card>
-                        <Card.Title>Our History</Card.Title>
-                        <Card.Divider/>
-                            <FlatList 
-                                data={this.props.leaders.leaders}
-                                renderItem={({item}) => <RenderMenuItem leader={item}/>}
-                                keyExtractor={item => item.id.toString()}
-                            />
-                    </Card>
-                </View>
+                <ScrollView>
+                    <Animatable.View animation="fadeInDown" duration={1000} delay={1000}>
+                        <History/>
+                        <Card>
+                            <Card.Title>Our History</Card.Title>
+                            <Card.Divider/>
+                                <FlatList 
+                                    data={this.props.leaders.leaders}
+                                    renderItem={({item}) => <RenderMenuItem leader={item}/>}
+                                    keyExtractor={item => item.id.toString()}
+                                />
+                        </Card>
+                    </Animatable.View>
+                </ScrollView>
             )
         }
     }

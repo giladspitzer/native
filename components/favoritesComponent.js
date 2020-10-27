@@ -4,9 +4,13 @@ import { ListItem, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { Loading } from './loadingComponent';
-import Swipeout from 'react-native-swipeout'
 import { deleteFavorite } from '../redux/ActionCreators'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
+import * as Animatable from 'react-native-animatable';
+// import {
+//     SCLAlert,
+//     SCLAlertButton
+//   } from 'react-native-scl-alert'
 
 const mapStateToProps = state => {
     return {
@@ -26,11 +30,7 @@ class Favorites extends Component{
 
 
         const renderMenuItem = ({ item, index }) => {
-            const rightButton = (progress, dragX) => {
-                const scale = dragX.interpolate({
-                    inputRange: [-50, 0],
-                    outputRange: [0.7, 0]
-                })
+            const rightButton = () => {
                 return(
                     <TouchableOpacity onPress={() => {
                         Alert.alert(
@@ -52,15 +52,15 @@ class Favorites extends Component{
                         
                     }}>
                         <View style={{ backgroundColor: 'red', justifyContent: 'center', height:'100%' }}>
-                            <Animated.Text
+                            <Text
                                 style={{
                                 color: 'white',
                                 paddingHorizontal: 10,
                                 fontWeight: '600',
-                                transform: [{ scale }]
+                                // transform: [{ scale }]
                                 }}>
                                 Delete
-                            </Animated.Text>
+                            </Text>
                         </View>
                     </TouchableOpacity>
 
@@ -68,6 +68,7 @@ class Favorites extends Component{
             }
 
             return(
+                <Animatable.View animation="fadeInRightBig" duration={1000}>
                 <Swipeable renderRightActions={rightButton}>
                     <ListItem
                         key={index}
@@ -81,6 +82,7 @@ class Favorites extends Component{
                         </ListItem.Content>
                     </ListItem>
                 </Swipeable>
+                </Animatable.View>
             )
         }
         if(this.props.dishes.isLoading){
