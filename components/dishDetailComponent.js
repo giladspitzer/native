@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, FlatList, Modal, Button, StyleSheet, 
-    SafeAreaView } from 'react-native';
+    SafeAreaView, Alert, PanResponder } from 'react-native';
 import { Card, Icon, AirbnbRating, Input } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -22,11 +22,56 @@ const mapDispatchToProps = dispatch => ({
     postComment: (data) => dispatch(postComment(data))
 })
 
+
+
+
 function RenderDish(props){
-    const dish = props.dish
+    const dish = props.dish;
+
+    handleViewRef = ref => this.view = ref;
+
+    const rightDrag = ({ moveX, moveY, dx, dy }) => {
+        if ( dx < -80 )
+            return true;
+        else
+            return false;
+    }
+    const leftDrag = ({ moveX, moveY, dx, dy }) => {
+        if ( dx < 80 )
+            return true;
+        else
+            return false;
+    }
+
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: (e, gestureState) => {
+            return true;
+        },
+        onPanResponderGrant: () => {this.view.rubberBand(1000).then(endState => console.log(endState.finished ? 'finished' : 'cancelled'));},
+        onPanResponderEnd: (e, gestureState) => {
+            console.log("pan responder end", gestureState);
+            if (rightDrag(gestureState)){
+                Alert.alert(
+                    'Add Favorite',
+                    'Are you sure you wish to add ' + dish.name + ' to favorite?',
+                    [
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'OK', onPress: () => {props.favorite ? console.log('Already favorite') : props.onPress()}},
+                    ],
+                    { cancelable: false }
+                );
+            }else if(leftDrag(gestureState)){
+                props.toggleCommentModal()
+            }
+            return true;
+        }
+    })
+    
     if(dish != null){
         return(
-            <Animatable.View animation="fadeInDown" duration={1000} delay={1000}>
+            <Animatable.View animation="fadeInDown" duration={1000} delay={1000}
+            ref={this.handleViewRef}
+            {...panResponder.panHandlers}>
             <Card>
             <Card.Title>{dish.name}</Card.Title>
             <Card.Image source={{uri: baseUrl + dish.image}}/>     

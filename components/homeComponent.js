@@ -64,6 +64,7 @@ class Home extends Component{
         Animated.timing(
             this.animatedValue,
             {
+                useNativeDriver: true,
                 toValue: 8,
                 duration: 8000,
                 easing: Easing.linear
