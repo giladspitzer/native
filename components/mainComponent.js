@@ -15,6 +15,7 @@ import { Icon } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import Favorites from './favoritesComponent';
+import Login from './loginComponent';
 
 const mapStateToProps = state => {
   return {
@@ -101,6 +102,19 @@ function AboutStack(){
     )
 }
 
+const LoginNavigator = createStackNavigator();
+function LoginStack(){
+    return(
+        <LoginNavigator.Navigator headerMode="screen" screenOptions={defaultScreenOptions}>
+            <LoginNavigator.Screen
+                name="Login"
+                component={ Login }
+                options={drawerMenutButton}
+                />
+        </LoginNavigator.Navigator>
+    )
+}
+
 const FavoritesNavigator = createStackNavigator();
 function FavoritesStack(){
     return(
@@ -183,6 +197,13 @@ function MyDrawer(){
         itemStyle: { marginVertical: 5 },
       }}
     >
+      <Drawer.Screen
+        name="Login"
+        component={ LoginStack }
+        options={{
+          drawerIcon: ({ tintColor }) => (<Icon name='sign-in' size={24} color={tintColor} type='font-awesome' onPress={() => navigation.toggleDrawer()}/>)
+        }}
+      /> 
       <Drawer.Screen
         name="Home"
         component={ HomeStack }
