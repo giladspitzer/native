@@ -5,7 +5,6 @@ import { Card, Icon, AirbnbRating, Input } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite, postComment } from '../redux/ActionCreators';
-import { color } from 'react-native-reanimated';
 import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {

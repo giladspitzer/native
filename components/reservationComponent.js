@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Switch, Button, Alert } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Switch, Button, Alert, Platform } from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker'
 import { Picker} from '@react-native-community/picker'
 import * as Animatable from 'react-native-animatable';
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
+import * as Calendar from 'expo-calendar';
 
 
+
+  
 class Reservation extends Component {
 
     constructor(props) {
@@ -22,20 +25,23 @@ class Reservation extends Component {
 
     async obtainNotificationPermission() {
         let permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        if (permission.status !== 'granted') {
+        while(permission.status !== 'granted') {
             permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            if (permission.status !== 'granted') {
-                Alert.alert('Permission not granted to show notifications');
-            }
+        }
+        let permission_r = await Permissions.getAsync(Permissions.REMINDERS);
+        while(permission_r.status !== 'granted') {
+            permission_r = await Permissions.askAsync(Permissions.REMINDERS);
         }
         return permission;
     }
 
     async presentLocalNotification(date) {
         await this.obtainNotificationPermission();
-        Notifications.presentLocalNotificationAsync({
-            title: 'Your Reservation',
-            body: 'Reservation for '+ date + ' requested',
+        Notifications.scheduleNotificationAsync({
+            content: {
+                title: 'Your Reservation',
+                body: 'Reservation for '+ date + ' requested',
+            },
             ios: {
                 sound: true
             },
@@ -43,8 +49,63 @@ class Reservation extends Component {
                 sound: true,
                 vibrate: true,
                 color: '#512DA8'
+            },
+            trigger: null
+
+        })
+        // Notifications.presentNotificationAsync({
+        //     title: 'Your Reservation',
+        //     body: 'Reservation for '+ date + ' requested',
+        //     ios: {
+        //         sound: true
+        //     },
+        //     android: {
+        //         sound: true,
+        //         vibrate: true,
+        //         color: '#512DA8'
+        //     }
+        // });
+    }
+
+    
+
+    async getDefaultCalendarSource() {
+        const calendars = await Calendar.getCalendarsAsync();
+        const defaultCalendars = calendars.filter(each => each.source.name === 'Default');
+        if(defaultCalendars.length > 0){
+            return defaultCalendars[0].id.toString();
+        }else{
+            return calendars.filter(each => each.allowsModifications === true)[0].id.toString();
+        }
+      }
+
+    async obtainCalendarPermission(){
+        let permission = await Permissions.getAsync(Permissions.CALENDAR);
+        if (permission.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.CALENDAR);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permission not granted to access calendar');
             }
-        });
+        }
+        return permission;
+    }
+
+    async addReservationToCalendar(){
+        await this.obtainCalendarPermission();
+        var start = Date.parse(this.state.date)
+        var end = Date.parse(this.state.date) + (2*60*60*1000)
+        Calendar.createEventAsync(
+            await this.getDefaultCalendarSource(),
+            {
+                title: 'Con Fusion Table Reservation', 
+                endDate: end,
+                startDate: start,
+                timeZone: 'Asia/Hong_Kong',
+                location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+            }
+            
+        )
+        return true
     }
 
     handleReservation() {
@@ -54,15 +115,17 @@ class Reservation extends Component {
             [
             {text: 'Cancel', onPress: () => this.resetForm(), style: 'cancel'},
             {text: 'OK', onPress: () => {
-                this.resetForm()
                 this.presentLocalNotification(this.state.date)
+                this.addReservationToCalendar()
+                this.resetForm()
             } },
             ],
             { cancelable: false }
         );
     }
 
-    resetForm() {
+    async resetForm() {
+        await this.addReservationToCalendar()
         this.setState({
             guests: 1,
             smoking: false,

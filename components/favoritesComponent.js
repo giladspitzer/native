@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, FlatList, Text, TouchableOpacity, Animated, Alert } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';

@@ -6,7 +6,7 @@ import Contact from './contactComponent'
 import About from './aboutComponent'
 import DishDetail from './dishDetailComponent';
 import Reservation from './reservationComponent';
-import { ScrollView, View, useWindowDimensions, Image, StyleSheet, Text } from 'react-native'
+import { ScrollView, View, useWindowDimensions, Image, StyleSheet, Text, Alert, SafeAreaView } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import Favorites from './favoritesComponent';
 import Login from './loginComponent';
+import NetInfo from "@react-native-community/netinfo";
 
 const mapStateToProps = state => {
   return {
@@ -262,6 +263,31 @@ class Main extends Component {
     this.props.fetchComments();
     this.props.fetchPromos();
     this.props.fetchLeaders();
+
+
+    NetInfo.fetch()
+    .then((connectionInfo) => {
+      const text = 'Initial Network Connectivity Type: '
+      + connectionInfo.type + ', effectiveType: ' + JSON.stringify(connectionInfo)
+        
+      // Alert.alert('Connection', text
+      //   )
+    });
+
+    this.netinfoUnsubscribe = NetInfo.addEventListener(this.handleConnectivityChange);
+
+
+  }
+
+  componentWillUnmount() {
+    if (this.netinfoUnsubscribe) {
+      this.netinfoUnsubscribe();
+      this.netinfoUnsubscribe;
+    }
+  }
+
+  handleConnectivityChange = (connectionInfo) => {
+    console.log(connectionInfo)
   }
 
   render() {
