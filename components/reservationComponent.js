@@ -105,7 +105,7 @@ class Reservation extends Component {
             }
             
         )
-        return true
+        this.resetForm()
     }
 
     handleReservation() {
@@ -117,7 +117,6 @@ class Reservation extends Component {
             {text: 'OK', onPress: () => {
                 this.presentLocalNotification(this.state.date)
                 this.addReservationToCalendar()
-                this.resetForm()
             } },
             ],
             { cancelable: false }
@@ -125,7 +124,6 @@ class Reservation extends Component {
     }
 
     async resetForm() {
-        await this.addReservationToCalendar()
         this.setState({
             guests: 1,
             smoking: false,
